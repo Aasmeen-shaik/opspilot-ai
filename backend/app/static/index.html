@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsPilot AI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="icon" href="/static/icons/icon-192.png" type="image/png" />
+<link rel="manifest" href="/static/manifest.json" />
+<meta name="theme-color" content="#22D3EE" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="OpsPilot AI" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">O</div>
+        <div>
+          <h1>OpsPilot AI</h1>
+          <p>Execution Intelligence</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="analysis">New Analysis</button>
+        <button class="nav-item" data-view="board">Execution Board</button>
+        <button class="nav-item" data-view="risks">Risk Register</button>
+        <button class="nav-item" data-view="runbook">Runbook</button>
+        <button class="nav-item" data-view="summary">Stakeholder Summary</button>
+        <button class="nav-item" data-view="audit">Audit Trail</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <span class="status-dot"></span>
+        <div>
+          <strong>FastAPI Live</strong>
+          <p>Local demo running</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Enterprise AI Workflow Platform</p>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <button class="primary-small" onclick="showView('analysis')">New Analysis</button>
+      </header>
+
+      <section id="dashboard" class="view active">
+        <section class="hero-card">
+          <div class="hero-content">
+            <div class="pill">AI Operations Layer</div>
+            <h1 class="hero-title">
+  <span>Turn meetings</span>
+  <span>into execution-ready</span>
+  <span class="gradient-text">AI workflows.</span>
+</h1>
+            <p>
+              OpsPilot AI converts technical meeting notes into decisions,
+              action items, risks, runbook steps, stakeholder summaries,
+              and audit history.
+            </p>
+            <div class="hero-actions">
+              <button class="primary-btn" onclick="showView('analysis')">Generate Execution Plan</button>
+              <button class="secondary-btn" onclick="showView('board')">View Board</button>
+            </div>
+          </div>
+
+          <div class="hero-graphic">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="floating-card card-one">
+              <span>Decisions</span>
+              <strong id="graphicDecisions">0</strong>
+            </div>
+            <div class="floating-card card-two">
+              <span>Open Tasks</span>
+              <strong id="graphicTasks">0</strong>
+            </div>
+            <div class="floating-card card-three">
+              <span>Risks</span>
+              <strong id="graphicRisks">0</strong>
+            </div>
+            <div class="core-orb">AI</div>
+          </div>
+        </section>
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <p>Total Meetings</p>
+            <h3 id="totalMeetings">0</h3>
+          </div>
+          <div class="stat-card">
+            <p>Open Action Items</p>
+            <h3 id="openTasks">0</h3>
+          </div>
+          <div class="stat-card">
+            <p>High Risks</p>
+            <h3 id="highRisks">0</h3>
+          </div>
+          <div class="stat-card">
+            <p>Decisions</p>
+            <h3 id="totalDecisions">0</h3>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Latest AI Summary</h3>
+                <p>Most recent meeting intelligence</p>
+              </div>
+            </div>
+            <p id="latestSummary" class="muted-text">
+              No meeting analyzed yet. Create your first analysis.
+            </p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Recent Meetings</h3>
+                <p>Click a meeting to open it</p>
+              </div>
+            </div>
+            <div id="recentMeetings" class="recent-list"></div>
+          </div>
+        </section>
+      </section>
+
+      <section id="analysis" class="view">
+        <div class="analysis-grid">
+          <div class="panel form-panel">
+            <h3>Create Meeting Analysis</h3>
+            <p class="muted-text">
+              Paste meeting notes and generate a complete execution package.
+            </p>
+
+            <label>Meeting Title</label>
+            <input id="meetingTitle" value="GPU Cost Optimization Meeting" />
+
+            <label>Project Name</label>
+            <input id="projectName" value="RosieVision Operations" />
+
+            <button class="primary-btn full" onclick="analyzeMeeting()">
+              Generate Execution Plan
+            </button>
+          </div>
+
+          <div class="panel transcript-panel">
+            <label>Meeting Transcript</label>
+
+<div class="mic-panel">
+  <div>
+    <h4>Live Meeting Capture</h4>
+    <p id="micStatus">Mic is ready. Click the mic icon to capture meeting audio.</p>
+  </div>
+
+  <div class="mic-actions">
+    <button id="micToggleBtn" class="mic-toggle-btn" onclick="toggleMic()" title="Start microphone" aria-label="Start microphone">
+      <svg class="mic-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 10V11C5 14.87 8.13 18 12 18C15.87 18 19 14.87 19 11V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 18V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 21H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="mic-btn clear" onclick="clearTranscript()">Clear</button>
+  </div>
+</div>
+
+<textarea id="transcriptText"></textarea>
+          </div>
+        </div>
+      </section>
+            <section id="board" class="view">
+        <div class="section-heading">
+          <h3>Execution Board</h3>
+          <p>Action items grouped by status</p>
+        </div>
+        <div class="kanban" id="taskBoard"></div>
+      </section>
+
+      <section id="risks" class="view">
+        <div class="section-heading">
+          <h3>Risk Register</h3>
+          <p>Detected risks, impact, and mitigation</p>
+        </div>
+        <div class="cards-grid" id="riskList"></div>
+      </section>
+
+      <section id="runbook" class="view">
+        <div class="section-heading">
+          <h3>Generated Runbook</h3>
+          <p>Technical execution steps from meeting notes</p>
+        </div>
+        <div class="timeline" id="runbookList"></div>
+      </section>
+
+      <section id="summary" class="view">
+        <div class="section-heading">
+          <h3>Stakeholder Summary</h3>
+          <p>Technical and business-ready summary</p>
+        </div>
+
+        <div class="summary-grid">
+          <div class="panel">
+            <p class="eyebrow">Technical Summary</p>
+            <h3>Engineering View</h3>
+            <p id="technicalSummary" class="summary-text">No analysis yet.</p>
+          </div>
+
+          <div class="panel">
+            <p class="eyebrow purple">Business Summary</p>
+            <h3>Leadership View</h3>
+            <p id="businessSummary" class="summary-text">No analysis yet.</p>
+          </div>
+        </div>
+
+        <div class="panel decisions-panel">
+          <h3>Detected Decisions</h3>
+          <div id="decisionList"></div>
+        </div>
+      </section>
+
+      <section id="audit" class="view">
+        <div class="section-heading">
+          <h3>Audit Trail</h3>
+          <p>Traceability for every generated artifact</p>
+        </div>
+        <div class="timeline" id="auditList"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Execution plan generated</div>
+
+  <script src="/static/script.js"></script>
+    <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/static/service-worker.js");
+    });
+  }
+</script>
+  
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Python
+backend/venv/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files
+.env
+.env.local
+
+# Local generated data
+backend/data/*.json
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
